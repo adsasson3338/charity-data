@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+    <meta charset="utf-8"/>
+    <title>Sakar Donations</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+    </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+            color: #333;
+	        }
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input[type="text"], select {
+            width: 50%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .print-button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #0078D4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .print-button:hover {
+            background-color: #005A9E;
+        }
+        @media print {
+            body {
+                background-color: white;
+                margin: 0;
+		
+            }
+            form {
+                box-shadow: none;
+                border: none;
+            }
+            .print-button {
+                display: none;
+            }
+            .print-date {
+                margin-top: 20px;
+                font-size: 14px;
+            }
+        }
+        .print-date {
+            margin-top: 20px;
+            font-size: 14px;
+            font-style: italic;
+        }
+    </style><style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #333;
+            background-color: #f9f9f9;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+        .form-section label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-section input[type="text"],
+        .form-section select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        .checkbox-group {
+            margin-bottom: 10px;
+        }
+        .checkbox-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        #printButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        @media print {
+            #printButton {
+                display: none;
+            }
+            body {
+                margin: 0;
+            }
+        }
+    </style>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:_dlc_DocId msdt:dt="string">S3Y7VVXF334W-200692748-2270</mso:_dlc_DocId>
+<mso:_dlc_DocIdItemGuid msdt:dt="string">8b764844-1251-4c5f-9f4b-1076507a91e6</mso:_dlc_DocIdItemGuid>
+<mso:_dlc_DocIdUrl msdt:dt="string">https://sakar.sharepoint.com/sites/accountingpr/_layouts/15/DocIdRedir.aspx?ID=S3Y7VVXF334W-200692748-2270, S3Y7VVXF334W-200692748-2270</mso:_dlc_DocIdUrl>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+    <div class="form-container">
+        <center><h3>Sakar International INC<br/>195 Carter Drive<br/>Edison, NJ 08817</h3></center>
+        <p id="currentDate"></p>
+<script>
+    document.getElementById("currentDate").textContent = "Date: " + new Date().toLocaleDateString();
+</script>
+        <center><h1>Donation Request Form</h1></center>
+        <div class="form-group">
+            <label for="charitySelect">Donation To:</label>
+            <select id="charitySelect" style="width: 100%">
+                <option value="">-- Select a Charity --</option>
+                <!-- Charity options will be populated dynamically -->
+            </select>
+        </div>
+        <div class="form-group">
+            <br>
+            <label for="amountRequested">Amount Requested:</label>
+            <input id="amountRequested" placeholder="Enter amount in USD" style="width: 25%;" type="number"/>
+            </br>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $.ajax({
+                    url: 'https://raw.githubusercontent.com/adsasson3338/charity-data/main/charity_names.json',
+                    dataType: 'json',
+                    success: function(data) {
+                    //    $('#charitySelect').select2({
+                    //        data: data.map(function(value) {
+                    //            return { id: value, text: value };
+                     //       }),
+                    //        placeholder: "-- Select a Charity --",
+                    //        allowClear: true
+                     //   });
+$('#charitySelect').select2({
+    data: data.map(function(value) {
+        return { id: value, text: value };
+    }),
+    placeholder: "-- Select a Charity --",
+    allowClear: true,
+    matcher: function(params, data) {
+        if ($.trim(params.term) === '') {
+            return data;
+        }
+
+        const term = params.term.toLowerCase();
+        const text = data.text.toLowerCase();
+
+        // Check if all characters in the term appear in order in the text
+        let index = 0;
+        for (let i = 0; i < term.length; i++) {
+            index = text.indexOf(term[i], index);
+            if (index === -1) {
+                return null;
+            }
+            index++;
+        }
+
+        return data;
+    }
+});
+
+                    }
+                });
+            });
+        </script>
+                <div style="margin-top: 20px;">
+            <br>
+            <label>From Account:</label>
+            <label><input name="charity_option" type="checkbox" value="Sakar International Inc."/> Sakar International Inc.</label><br/>
+            <label><input name="charity_option" type="checkbox" value="Allen Saka"/> Allen Saka</label><br/>
+           <!-- <label><input name="charity_option" type="checkbox" value="Family Foundation"/> Family Foundation</label></br> -->
+            
+        </div>
+        <br/>
+        <center>
+            <button class="print-button" onclick="printForm()">Click Here to Print Form</button>
+<button class="print-button" onclick="location.reload()">Click Here to Start Over</button>
+        </center>
+<script>
+function printForm() {
+    const date = new Date();
+    const formattedDate = date.toLocaleDateString();
+    const printWindow = window.open('', '', 'height=800,width=800');
+    printWindow.document.write('<html><head><title>Print Form</title>');
+    printWindow.document.write(`<style>
+        body { font-family: Arial, sans-serif; padding: 30px; line-height: 1.6; font-size: 15pt; }
+        h1, h2, h3 { margin-bottom: 10px; }
+        hr { margin: 20px 0; }
+        .section { margin-bottom: 20px; }
+        .label { font-weight: bold; }
+    </style>`);
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<center><h1>Donation Request Form</h1>');
+    printWindow.document.write('<b><p>Sakar International Inc.</b><br>195 Carter Drive, Edison, NJ 08817</p></center>');
+  
+
+    printWindow.document.write('<p><strong>Date:</strong> ' + formattedDate + '</p>');
+
+    <!-- printWindow.document.write('<div class="section"><center><h3>Donation Request</h3></center>'); -->
+    const charity = document.getElementById("charitySelect");
+const amountRaw = document.getElementById("amountRequested").value;
+
+// Convert to number and format with commas and two decimal places
+const amount = parseFloat(amountRaw.replace(/[^0-9.]/g, '')) || 0;
+const formattedAmount = amount.toLocaleString('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+
+printWindow.document.write('<br><p><strong>Vendor:</strong> ' + 
+  (charity.options[charity.selectedIndex]?.text || 'N/A') + '</p>');
+printWindow.document.write('<br><p><strong>Amount Requested:</strong> $' + 
+  formattedAmount + '</p></div>');
+
+    printWindow.document.write('<div class="section"><br><h3>From Account</h3>');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+        const label = cb.nextSibling.textContent.trim();
+        printWindow.document.write('<p>' + (cb.checked ? '[x] ' : '[ ] ') + label + '</p>');
+    });
+    printWindow.document.write('</div>');
+
+    printWindow.document.write('<br><p><strong>Signed by:</strong> ____________________________</p>');
+       printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+</script>
+    </div>
+</body>
+</html>
