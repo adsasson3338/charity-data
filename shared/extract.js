@@ -386,4 +386,4 @@
     bsr: bsr,
     pdp: pdp
   };
-})(typeof unsafeWindow !== 'undefined' ? unsafeWindow : window);
+})(typeof globalThis !== 'undefined' ? globalThis : this);
